@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Quote from '../Quote'
 import './RandomQuote.css';
 
 class RandomQuote extends Component {
@@ -67,27 +68,52 @@ class RandomQuote extends Component {
           author : 'Virginia Woolf',
           quote : "Writing is like sex. First you do it for love, then you do it for your friends, and then you do it for money."
         },
-      ]
+      ],
+      currentQuote : {
+        id : undefined,
+        quote : undefined,
+        author : undefined,
+      }
     }
 
     this.handleClick = this.handleClick.bind(this);
   }
+
+  componentWillMount(){
+    this.getRandomQuote();
+  }
   
-  handleClick(e){
-    
+  getRandomQuote(){
+    let {id, quote, author} = this.state.quotes[Math.floor(Math.random() * this.state.quotes.length)];
+
+    this.setState({currentQuote : {id, quote, author}})
+    return this.state.currentQuote;
+  }
+
+  handleClick(id){
+    this.getRandomQuote();
+    while(this.state.currentQuote.id === id){
+      this.getRandomQuote();
+    }
   }
 
   render() {
+
+    const {id, quote, author} = this.state.currentQuote;
+
     return (
       <div id='quote-box'>
-       <a 
-        id='tweet-quote'
-        href='twitter.com/intent/tweet'>
-        <i class="fas fa-twitter-square"/></a>
-        <button
-          id='new-quote'
-          onClick={this.handleClick}
-        >New Quote</button>
+        <Quote quote={quote} author={author}/>
+        <div className='myButtons'>
+          <a 
+            id='tweet-quote'
+            href='twitter.com/intent/tweet'>
+            <i className="fab fa-twitter-square fa-3x"/></a>
+            <button
+              id='new-quote'
+              onClick={() => this.handleClick()}
+            >New Quote</button>
+        </div>
       </div>
     );
   }
