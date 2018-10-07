@@ -90,7 +90,8 @@ class RandomQuote extends Component {
     return this.state.currentQuote;
   }
 
-  handleClick(id){
+  handleClick(){
+    const {id} = this.state.currentQuote.id;
     this.getRandomQuote();
     while(this.state.currentQuote.id === id){
       this.getRandomQuote();
@@ -99,7 +100,7 @@ class RandomQuote extends Component {
 
   render() {
 
-    const {id, quote, author} = this.state.currentQuote;
+    const { quote, author} = this.state.currentQuote;
 
     return (
       <div id='quote-box'>
